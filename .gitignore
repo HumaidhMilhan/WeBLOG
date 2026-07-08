@@ -1,0 +1,33 @@
+# IDE and Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PHP Configuration
+backend/config/db.php
+
+# Database
+*.sql.bak
+database/backups/
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+cache/
+
+# Node modules (if applicable)
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+.env.local
