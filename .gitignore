@@ -31,3 +31,9 @@ package-lock.json
 # Environment variables
 .env
 .env.local
+
+# Project Planning & Guidelines
+guidelines.md
+guideline.md
+implementation_plan.md
+
