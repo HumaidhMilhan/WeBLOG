@@ -105,3 +105,26 @@ body {
     color: #155724;
     border: 1px solid #c3e6cb;
 }
+
+.setup-container {
+    text-align: center;
+}
+
+.setup-message {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.setup-link {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.setup-link:hover {
+    background-color: #2980b9;
+}

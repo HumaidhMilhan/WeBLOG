@@ -1,0 +1,7 @@
+Options -Indexes
+RewriteEngine On
+RewriteRule ^backend/config(?:/|$) - [F,L,NC]
+RewriteRule ^backend/includes(?:/|$) - [F,L,NC]
+RewriteRule ^database(?:/|$) - [F,L,NC]
+RewriteRule ^docs(?:/|$) - [F,L,NC]
+RewriteRule (^|/)\. - [F,L]
