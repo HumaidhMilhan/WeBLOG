@@ -51,3 +51,7 @@ WeBLOG is a lightweight, responsive Blog Application built as part of the IN2120
 4. **Run the Application**
    - Place the project directory under your web server root (e.g., `htdocs` for Apache).
    - Open your browser and navigate to the application starting page, e.g., `http://localhost/WeBLOG/frontend/pages/login_view.php`.
+
+## Deployment
+
+The public application is available at [https://humaidh.alwaysdata.net](https://humaidh.alwaysdata.net) and is deployed from the verified `main` branch using Git over SSH. See [docs/deployment.md](docs/deployment.md) for the release, verification, database-change, and rollback procedures.
