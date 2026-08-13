@@ -1,42 +1,41 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: ../../frontend/pages/login_view.php');
+    exit;
 }
 
-require_once '../config/db.php';
+require_once __DIR__ . '/../config/db.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? '');
-    $password = $_POST['password'] ?? '';
+$username = trim($_POST['username'] ?? '');
+$password = $_POST['password'] ?? '';
 
-    if (empty($username) || empty($password)) {
-        $_SESSION['error'] = 'Username and password are required.';
+if (empty($username) || empty($password)) {
+    $_SESSION['error'] = 'Username and password are required.';
+    header('Location: ../../frontend/pages/login_view.php');
+    exit;
+}
+
+try {
+    $statement = $pdo->prepare('SELECT id, username, password FROM user WHERE username = ?');
+    $statement->execute([$username]);
+    $user = $statement->fetch();
+
+    if (!$user || !password_verify($password, $user['password'])) {
+        $_SESSION['error'] = 'Invalid username or password.';
         header('Location: ../../frontend/pages/login_view.php');
         exit;
     }
 
-    try {
-        $stmt = $pdo->prepare("SELECT * FROM user WHERE username = ?");
-        $stmt->execute([$username]);
-        $user = $stmt->fetch();
+    session_regenerate_id(true);
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['username'] = $user['username'];
 
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] = $user['role'];
-            header('Location: ../../frontend/pages/home.php');
-            exit;
-        } else {
-            $_SESSION['error'] = 'Invalid username or password.';
-            header('Location: ../../frontend/pages/login_view.php');
-            exit;
-        }
-    } catch (PDOException $e) {
-        $_SESSION['error'] = 'An error occurred during login.';
-        header('Location: ../../frontend/pages/login_view.php');
-        exit;
-    }
-} else {
+    header('Location: ../../frontend/pages/home.php');
+    exit;
+} catch (PDOException $error) {
+    $_SESSION['error'] = 'Login failed. Please try again.';
     header('Location: ../../frontend/pages/login_view.php');
     exit;
 }

@@ -24,16 +24,7 @@ tmp/
 temp/
 cache/
 
-# Node modules (if applicable)
-node_modules/
-package-lock.json
-
 # Environment variables
 .env
 .env.local
-
-# Project Planning & Guidelines
-guidelines.md
-guideline.md
-implementation_plan.md
 

@@ -1,6 +1,9 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+session_start();
+
+if (isset($_SESSION['user_id'])) {
+    header('Location: home.php');
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -15,28 +18,28 @@ if (session_status() === PHP_SESSION_NONE) {
     <div class="auth-container">
         <h2>Login to WeBLOG</h2>
         
-        <?php if (isset($_SESSION['error'])): ?>
+        <?php if (isset($_SESSION['error'])) { ?>
             <div class="alert alert-error">
-                <?php 
-                echo htmlspecialchars($_SESSION['error']); 
+                <?php
+                echo htmlspecialchars($_SESSION['error']);
                 unset($_SESSION['error']);
                 ?>
             </div>
-        <?php endif; ?>
+        <?php } ?>
 
-        <?php if (isset($_SESSION['success'])): ?>
+        <?php if (isset($_SESSION['success'])) { ?>
             <div class="alert alert-success">
-                <?php 
-                echo htmlspecialchars($_SESSION['success']); 
+                <?php
+                echo htmlspecialchars($_SESSION['success']);
                 unset($_SESSION['success']);
                 ?>
             </div>
-        <?php endif; ?>
+        <?php } ?>
 
         <form action="../../backend/api/login.php" method="POST">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" maxlength="50" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>

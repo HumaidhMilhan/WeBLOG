@@ -7,9 +7,6 @@ The public application runs at [https://humaidh.alwaysdata.net](https://humaidh.
 Run in PowerShell from the repository root:
 
 ```powershell
-$publicUrl = 'https://humaidh.alwaysdata.net'
-& 'tests\hosting_bootstrap_test.ps1' -BaseUrl $publicUrl
-
 $lintFailures = 0
 Get-ChildItem -Recurse -Filter *.php | ForEach-Object {
     C:\xampp\php\php.exe -l $_.FullName
@@ -41,11 +38,9 @@ $deployedCommit = ssh 'humaidh@ssh-humaidh.alwaysdata.net' "cd /home/humaidh/web
 
 if ($localCommit -ne $originCommit) { throw 'Local main does not match origin/main' }
 if ($localCommit -ne $deployedCommit.Trim()) { throw 'The deployed commit does not match local main' }
-
-& 'tests\hosting_bootstrap_test.ps1' -BaseUrl 'https://humaidh.alwaysdata.net'
 ```
 
-Run the phase-specific public user-flow checks after this common smoke test.
+Open the public website and test registration, login, the protected home page, and logout.
 
 ## Database Configuration
 
