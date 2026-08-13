@@ -14,7 +14,7 @@ if (isset($_SESSION['user_id'])) {
     <title>Login - WeBLOG</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
+<body class="auth-page">
     <div class="auth-container">
         <h2>Login to WeBLOG</h2>
         

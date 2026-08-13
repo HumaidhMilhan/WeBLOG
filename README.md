@@ -9,7 +9,14 @@ WeBLOG is a blog application created for the IN2120 Web Programming assignment. 
 - User logout
 - Password hashing
 - Session authentication
-- Protected home page
+
+## Phase 2
+
+- Public blog list
+- Public single blog page
+- Create blogs while logged in
+- Edit and delete only your own blogs
+- Blog ownership checks
 
 ## Project Structure
 
