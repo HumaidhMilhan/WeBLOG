@@ -18,6 +18,12 @@ WeBLOG is a blog application created for the IN2120 Web Programming assignment. 
 - Edit and delete only your own blogs
 - Blog ownership checks
 
+## Phase 3
+
+- Responsive frontend pages
+- Blog editor validation with JavaScript
+- Delete confirmation with JavaScript
+
 ## Project Structure
 
 - `backend/api` contains the form handlers.

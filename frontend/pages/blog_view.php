@@ -22,6 +22,7 @@ if (!$blog) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $blog ? htmlspecialchars($blog['title']) : 'Blog not found'; ?> - WeBLOG</title>
     <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js" defer></script>
 </head>
 <body>
     <header class="site-header">
@@ -69,7 +70,7 @@ if (!$blog) {
                 <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $blog['user_id']) { ?>
                     <div class="blog-actions">
                         <a class="button-link" href="blog_editor.php?id=<?php echo $blog['id']; ?>">Edit Blog</a>
-                        <form action="../../backend/api/delete_blog.php" method="POST">
+                        <form class="delete-form" action="../../backend/api/delete_blog.php" method="POST">
                             <input type="hidden" name="id" value="<?php echo $blog['id']; ?>">
                             <button class="danger-button" type="submit">Delete Blog</button>
                         </form>

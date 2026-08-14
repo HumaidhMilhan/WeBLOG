@@ -42,6 +42,7 @@ if (isset($_GET['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $pageTitle; ?> - WeBLOG</title>
     <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js" defer></script>
 </head>
 <body>
     <header class="site-header">
@@ -66,7 +67,7 @@ if (isset($_GET['id'])) {
             </div>
         <?php } ?>
 
-        <form action="<?php echo $formAction; ?>" method="POST">
+        <form class="blog-form" action="<?php echo $formAction; ?>" method="POST">
             <?php if ($blog) { ?>
                 <input type="hidden" name="id" value="<?php echo $blog['id']; ?>">
             <?php } ?>
@@ -81,6 +82,7 @@ if (isset($_GET['id'])) {
                 <textarea id="content" name="content" rows="14" required><?php echo $blog ? htmlspecialchars($blog['content']) : ''; ?></textarea>
             </div>
 
+            <p class="form-error" id="form-error"></p>
             <button class="btn" type="submit"><?php echo $blog ? 'Update Blog' : 'Publish Blog'; ?></button>
         </form>
     </main>
