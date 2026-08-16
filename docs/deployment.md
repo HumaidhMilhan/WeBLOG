@@ -40,7 +40,7 @@ if ($localCommit -ne $originCommit) { throw 'Local main does not match origin/ma
 if ($localCommit -ne $deployedCommit.Trim()) { throw 'The deployed commit does not match local main' }
 ```
 
-Open the public website and test registration, login, the protected home page, and logout.
+Open the public website and test registration, login, blog publishing, Markdown preview, comments, and logout.
 
 ## Database Configuration
 
@@ -57,6 +57,8 @@ The password remains only in the ignored server configuration and the alwaysdata
 ## Database Changes
 
 Export the production database before destructive schema changes. Apply schema changes explicitly over SSH or through phpMyAdmin; do not run schema-altering SQL during a normal page request.
+
+Before deploying the comments feature to an existing database, import `database/add_comments.sql` through phpMyAdmin. A new installation can import `database/schema.sql` instead.
 
 ## Rollback
 

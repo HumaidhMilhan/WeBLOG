@@ -24,6 +24,16 @@ WeBLOG is a blog application created for the IN2120 Web Programming assignment. 
 - Blog editor validation with JavaScript
 - Delete confirmation with JavaScript
 
+## Final Features
+
+- Markdown editor with a formatting toolbar and live preview
+- Bold, italic, underline, headings, lists, and safe hyperlinks
+- 3000-character blog limit
+- Login validation in PHP and JavaScript
+- Public comments for blog posts
+- Comment deletion by the comment author or blog owner
+- Responsive homepage with blog excerpts and comment counts
+
 ## Project Structure
 
 - `backend/api` contains the form handlers.
@@ -48,6 +58,8 @@ WeBLOG is a blog application created for the IN2120 Web Programming assignment. 
    ```
 
 3. Copy `backend/config/db.example.php` to `backend/config/db.php` and enter the database details.
+
+   Existing installations should also import `database/add_comments.sql`.
 
 4. Place the project in the web server directory and open `index.php` in a browser.
 

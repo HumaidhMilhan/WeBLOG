@@ -16,7 +16,10 @@ if (isset($_SESSION['user_id'])) {
 </head>
 <body class="auth-page">
     <div class="auth-container">
-        <h2>Create an Account</h2>
+        <a class="auth-brand site-title" href="home.php">We<span>BLOG</span></a>
+        <span class="eyebrow">Join the community</span>
+        <h1>Create your account</h1>
+        <p class="auth-intro">Start publishing your ideas and connecting with other writers.</p>
         
         <?php if (isset($_SESSION['error'])) { ?>
             <div class="alert alert-error">

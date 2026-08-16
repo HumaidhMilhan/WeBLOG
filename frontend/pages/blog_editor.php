@@ -47,7 +47,7 @@ if (isset($_GET['id'])) {
 <body>
     <header class="site-header">
         <nav class="navbar">
-            <a class="site-title" href="home.php">WeBLOG</a>
+            <a class="site-title" href="home.php">We<span>BLOG</span></a>
             <div class="nav-links">
                 <a href="home.php">Home</a>
                 <a href="../../backend/api/logout.php">Logout</a>
@@ -56,7 +56,14 @@ if (isset($_GET['id'])) {
     </header>
 
     <main class="editor-container">
-        <h1><?php echo $pageTitle; ?></h1>
+        <div class="editor-heading">
+            <div>
+                <span class="eyebrow">Markdown editor</span>
+                <h1><?php echo $pageTitle; ?></h1>
+                <p>Write your story and preview the formatting as you go.</p>
+            </div>
+            <a class="text-link" href="home.php">Back to home</a>
+        </div>
 
         <?php if (isset($_SESSION['error'])) { ?>
             <div class="alert alert-error">
@@ -67,7 +74,7 @@ if (isset($_GET['id'])) {
             </div>
         <?php } ?>
 
-        <form class="blog-form" action="<?php echo $formAction; ?>" method="POST">
+        <form class="blog-form" action="<?php echo $formAction; ?>" method="POST" novalidate>
             <?php if ($blog) { ?>
                 <input type="hidden" name="id" value="<?php echo $blog['id']; ?>">
             <?php } ?>
@@ -79,11 +86,30 @@ if (isset($_GET['id'])) {
 
             <div class="form-group">
                 <label for="content">Content</label>
-                <textarea id="content" name="content" rows="14" required><?php echo $blog ? htmlspecialchars($blog['content']) : ''; ?></textarea>
+                <div class="markdown-toolbar" aria-label="Markdown formatting">
+                    <button type="button" data-markdown="bold" title="Bold"><strong>B</strong></button>
+                    <button type="button" data-markdown="italic" title="Italic"><em>I</em></button>
+                    <button type="button" data-markdown="underline" title="Underline"><u>U</u></button>
+                    <button type="button" data-markdown="heading" title="Heading">H</button>
+                    <button type="button" data-markdown="unordered-list" title="Bullet list">• List</button>
+                    <button type="button" data-markdown="ordered-list" title="Numbered list">1. List</button>
+                    <button type="button" data-markdown="link" title="Hyperlink">Link</button>
+                </div>
+                <div class="editor-grid">
+                    <div class="editor-panel">
+                        <span class="panel-label">Write</span>
+                        <textarea id="content" name="content" rows="16" maxlength="3000" required><?php echo $blog ? htmlspecialchars($blog['content']) : ''; ?></textarea>
+                    </div>
+                    <div class="editor-panel preview-panel">
+                        <span class="panel-label">Preview</span>
+                        <div class="markdown-preview blog-content" id="markdown-preview"></div>
+                    </div>
+                </div>
+                <div class="character-count"><span id="content-count">0</span> / 3000 characters</div>
             </div>
 
             <p class="form-error" id="form-error"></p>
-            <button class="btn" type="submit"><?php echo $blog ? 'Update Blog' : 'Publish Blog'; ?></button>
+            <button class="btn editor-submit" type="submit"><?php echo $blog ? 'Update Blog' : 'Publish Blog'; ?></button>
         </form>
     </main>
 </body>

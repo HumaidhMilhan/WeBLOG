@@ -17,6 +17,18 @@ if (empty($username) || empty($password)) {
     exit;
 }
 
+if (mb_strlen($username) > 50) {
+    $_SESSION['error'] = 'Username must be 50 characters or fewer.';
+    header('Location: ../../frontend/pages/login_view.php');
+    exit;
+}
+
+if (strlen($password) < 6) {
+    $_SESSION['error'] = 'Password must be at least 6 characters.';
+    header('Location: ../../frontend/pages/login_view.php');
+    exit;
+}
+
 try {
     $statement = $pdo->prepare('SELECT id, username, password FROM user WHERE username = ?');
     $statement->execute([$username]);

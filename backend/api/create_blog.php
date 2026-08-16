@@ -28,6 +28,12 @@ if (strlen($title) > 255) {
     exit;
 }
 
+if (mb_strlen($content) > 3000) {
+    $_SESSION['error'] = 'Content must be 3000 characters or fewer.';
+    header('Location: ../../frontend/pages/blog_editor.php');
+    exit;
+}
+
 try {
     $statement = $pdo->prepare('INSERT INTO blogPost (user_id, title, content) VALUES (?, ?, ?)');
     $statement->execute([$_SESSION['user_id'], $title, $content]);

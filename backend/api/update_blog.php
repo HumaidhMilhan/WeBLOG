@@ -30,6 +30,12 @@ if (strlen($title) > 255) {
     exit;
 }
 
+if (mb_strlen($content) > 3000) {
+    $_SESSION['error'] = 'Content must be 3000 characters or fewer.';
+    header('Location: ../../frontend/pages/blog_editor.php?id=' . $id);
+    exit;
+}
+
 try {
     $statement = $pdo->prepare('SELECT id FROM blogPost WHERE id = ? AND user_id = ?');
     $statement->execute([$id, $_SESSION['user_id']]);
