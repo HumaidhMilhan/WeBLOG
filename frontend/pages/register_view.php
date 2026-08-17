@@ -16,7 +16,7 @@ if (isset($_SESSION['user_id'])) {
 </head>
 <body class="auth-page">
     <div class="auth-container">
-        <a class="auth-brand site-title" href="home.php">We<span>BLOG</span></a>
+        <a class="auth-brand site-title" href="home.php"><span>We</span>BLOG</a>
         <span class="eyebrow">Join the community</span>
         <h1>Create your account</h1>
         <p class="auth-intro">Start publishing your ideas and connecting with other writers.</p>

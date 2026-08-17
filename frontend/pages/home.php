@@ -3,8 +3,10 @@ session_start();
 require_once __DIR__ . '/../../backend/config/db.php';
 require_once __DIR__ . '/../../backend/includes/markdown.php';
 
-$statement = $pdo->query('SELECT blogPost.id, blogPost.title, blogPost.content, blogPost.created_at, user.username, COUNT(`comment`.id) AS comment_count FROM blogPost INNER JOIN user ON blogPost.user_id = user.id LEFT JOIN `comment` ON blogPost.id = `comment`.blog_id GROUP BY blogPost.id, blogPost.title, blogPost.content, blogPost.created_at, user.username ORDER BY blogPost.created_at DESC');
+$statement = $pdo->query('SELECT blogPost.id, blogPost.title, blogPost.content, blogPost.created_at, user.username, COUNT(`comment`.id) AS comment_count FROM blogPost INNER JOIN user ON blogPost.user_id = user.id LEFT JOIN `comment` ON blogPost.id = `comment`.blog_id GROUP BY blogPost.id, blogPost.title, blogPost.content, blogPost.created_at, user.username ORDER BY blogPost.created_at DESC, blogPost.id DESC');
 $blogs = $statement->fetchAll();
+$featuredBlog = $blogs[0] ?? false;
+$latestBlogs = $featuredBlog ? array_slice($blogs, 1) : [];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,39 +19,23 @@ $blogs = $statement->fetchAll();
 <body>
     <header class="site-header">
         <nav class="navbar">
-            <a class="site-title" href="home.php">We<span>BLOG</span></a>
+            <a class="site-title" href="home.php"><span>We</span>BLOG</a>
             <div class="nav-links">
+                <a class="active-link" href="home.php">Home</a>
                 <?php if (isset($_SESSION['user_id'])) { ?>
-                    <span class="welcome-text">Hello, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                    <a href="blog_editor.php">Write a blog</a>
-                    <a href="../../backend/api/logout.php">Logout</a>
+                    <a href="blog_editor.php">Write</a>
+                    <span class="welcome-text"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                    <a class="nav-button" href="../../backend/api/logout.php">Logout</a>
                 <?php } else { ?>
-                    <a href="login_view.php">Login</a>
-                    <a class="nav-button" href="register_view.php">Join WeBLOG</a>
+                    <a href="register_view.php">Register</a>
+                    <a class="nav-button" href="login_view.php">Login</a>
                 <?php } ?>
             </div>
         </nav>
     </header>
 
     <main>
-        <section class="hero">
-            <div class="hero-content">
-                <span class="eyebrow">Stories worth sharing</span>
-                <h1>Ideas, experiences and perspectives from our community.</h1>
-                <p>Discover the latest writing from WeBLOG members or share a story of your own.</p>
-                <?php if (isset($_SESSION['user_id'])) { ?>
-                    <a class="button-link" href="blog_editor.php">Start writing</a>
-                <?php } else { ?>
-                    <a class="button-link" href="register_view.php">Create an account</a>
-                <?php } ?>
-            </div>
-            <div class="hero-detail">
-                <span><?php echo count($blogs); ?></span>
-                <p><?php echo count($blogs) === 1 ? 'story published' : 'stories published'; ?></p>
-            </div>
-        </section>
-
-        <div class="page-container home-container">
+        <div class="site-messages">
             <?php if (isset($_SESSION['error'])) { ?>
                 <div class="alert alert-error">
                     <?php
@@ -67,42 +53,89 @@ $blogs = $statement->fetchAll();
                     ?>
                 </div>
             <?php } ?>
+        </div>
 
-            <div class="page-heading">
-                <div>
-                    <span class="eyebrow">Fresh from the community</span>
-                    <h2>Latest blogs</h2>
-                </div>
+        <section class="home-hero">
+            <div class="hero-dots" aria-hidden="true"></div>
+            <div class="hero-copy">
+                <span class="eyebrow">Independent ideas and stories</span>
+                <h1>Thoughts worth sharing.</h1>
+                <p>Discover clear ideas and honest stories from our community.</p>
+                <?php if ($featuredBlog) { ?>
+                    <a class="button-link" href="blog_view.php?id=<?php echo $featuredBlog['id']; ?>">Read featured story</a>
+                <?php } elseif (isset($_SESSION['user_id'])) { ?>
+                    <a class="button-link" href="blog_editor.php">Write the first story</a>
+                <?php } else { ?>
+                    <a class="button-link" href="register_view.php">Join WeBLOG</a>
+                <?php } ?>
             </div>
+            <div class="hero-rings" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </section>
 
-            <?php if (empty($blogs)) { ?>
-                <div class="empty-message">
-                    <h2>No blogs yet</h2>
-                    <p>Be the first person to share a story.</p>
+        <section class="stories-section" id="stories">
+            <?php if (!$featuredBlog) { ?>
+                <div class="empty-state">
+                    <span class="eyebrow">Start the collection</span>
+                    <h2>No stories have been published yet.</h2>
+                    <p>Share the first idea with the WeBLOG community.</p>
                 </div>
             <?php } else { ?>
-                <div class="blog-list">
-                    <?php foreach ($blogs as $blog) { ?>
-                        <article class="blog-card">
-                            <div class="card-topline">
-                                <span><?php echo htmlspecialchars($blog['username']); ?></span>
-                                <span><?php echo date('M j, Y', strtotime($blog['created_at'])); ?></span>
-                            </div>
-                            <h3>
-                                <a href="blog_view.php?id=<?php echo $blog['id']; ?>">
-                                    <?php echo htmlspecialchars($blog['title']); ?>
-                                </a>
-                            </h3>
-                            <p class="blog-excerpt"><?php echo htmlspecialchars(markdown_excerpt($blog['content'])); ?></p>
-                            <div class="card-footer">
-                                <a class="read-link" href="blog_view.php?id=<?php echo $blog['id']; ?>">Read story</a>
-                                <span><?php echo $blog['comment_count']; ?> <?php echo $blog['comment_count'] == 1 ? 'comment' : 'comments'; ?></span>
-                            </div>
-                        </article>
-                    <?php } ?>
+                <div class="section-heading">
+                    <span class="eyebrow">Selected from the community</span>
+                    <h2>Featured story</h2>
                 </div>
+
+                <article class="featured-story">
+                    <div class="featured-accent"></div>
+                    <div class="featured-copy">
+                        <h3>
+                            <a href="blog_view.php?id=<?php echo $featuredBlog['id']; ?>">
+                                <?php echo htmlspecialchars($featuredBlog['title']); ?>
+                            </a>
+                        </h3>
+                        <p><?php echo htmlspecialchars(markdown_excerpt($featuredBlog['content'], 220)); ?></p>
+                    </div>
+                    <div class="featured-meta">
+                        <span>By <?php echo htmlspecialchars($featuredBlog['username']); ?></span>
+                        <span><?php echo date('F j, Y', strtotime($featuredBlog['created_at'])); ?></span>
+                        <span><?php echo $featuredBlog['comment_count']; ?> <?php echo $featuredBlog['comment_count'] == 1 ? 'comment' : 'comments'; ?></span>
+                    </div>
+                    <a class="read-link featured-link" href="blog_view.php?id=<?php echo $featuredBlog['id']; ?>">Read story <span>→</span></a>
+                </article>
+
+                <?php if (!empty($latestBlogs)) { ?>
+                    <div class="section-heading latest-heading">
+                        <span class="eyebrow">More to explore</span>
+                        <h2>Latest stories</h2>
+                    </div>
+
+                    <div class="stories-grid">
+                        <?php foreach ($latestBlogs as $blog) { ?>
+                            <article class="story-card">
+                                <div class="story-card-meta">
+                                    <span><?php echo date('M j, Y', strtotime($blog['created_at'])); ?></span>
+                                    <span><?php echo $blog['comment_count']; ?> <?php echo $blog['comment_count'] == 1 ? 'comment' : 'comments'; ?></span>
+                                </div>
+                                <h3>
+                                    <a href="blog_view.php?id=<?php echo $blog['id']; ?>">
+                                        <?php echo htmlspecialchars($blog['title']); ?>
+                                    </a>
+                                </h3>
+                                <p><?php echo htmlspecialchars(markdown_excerpt($blog['content'], 145)); ?></p>
+                                <div class="story-card-footer">
+                                    <span>By <?php echo htmlspecialchars($blog['username']); ?></span>
+                                    <a class="read-link" href="blog_view.php?id=<?php echo $blog['id']; ?>">Read story <span>→</span></a>
+                                </div>
+                            </article>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
             <?php } ?>
-        </div>
+        </section>
     </main>
 </body>
 </html>

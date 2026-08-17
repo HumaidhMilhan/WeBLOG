@@ -47,9 +47,10 @@ if (isset($_GET['id'])) {
 <body>
     <header class="site-header">
         <nav class="navbar">
-            <a class="site-title" href="home.php">We<span>BLOG</span></a>
+            <a class="site-title" href="home.php"><span>We</span>BLOG</a>
             <div class="nav-links">
                 <a href="home.php">Home</a>
+                <a class="active-link" href="blog_editor.php">Write</a>
                 <a href="../../backend/api/logout.php">Logout</a>
             </div>
         </nav>
@@ -60,7 +61,7 @@ if (isset($_GET['id'])) {
             <div>
                 <span class="eyebrow">Markdown editor</span>
                 <h1><?php echo $pageTitle; ?></h1>
-                <p>Write your story and preview the formatting as you go.</p>
+                <p>Draft, format, and preview your story before publishing.</p>
             </div>
             <a class="text-link" href="home.php">Back to home</a>
         </div>

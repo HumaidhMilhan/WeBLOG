@@ -35,9 +35,9 @@ if (!$blog) {
 <body>
     <header class="site-header">
         <nav class="navbar">
-            <a class="site-title" href="home.php">We<span>BLOG</span></a>
+            <a class="site-title" href="home.php"><span>We</span>BLOG</a>
             <div class="nav-links">
-                <a href="home.php">Home</a>
+                <a class="active-link" href="home.php">Home</a>
                 <?php if (isset($_SESSION['user_id'])) { ?>
                     <a href="blog_editor.php">Write a blog</a>
                     <a href="../../backend/api/logout.php">Logout</a>
