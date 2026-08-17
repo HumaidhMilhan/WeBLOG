@@ -471,6 +471,79 @@ textarea {
     background: #ffe7e5;
 }
 
+body.dialog-open {
+    overflow: hidden;
+}
+
+.delete-dialog {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    display: none;
+    padding: 20px;
+    background: rgba(20, 30, 55, 0.48);
+    place-items: center;
+}
+
+.delete-dialog.is-open {
+    display: grid;
+}
+
+.delete-dialog-card {
+    width: min(100%, 420px);
+    padding: clamp(25px, 5vw, 36px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: 0 24px 70px rgba(20, 30, 55, 0.2);
+    text-align: center;
+}
+
+.delete-dialog-icon {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 17px;
+    border-radius: 50%;
+    background: var(--danger-soft);
+    color: var(--danger);
+    font-size: 1.25rem;
+    font-weight: 800;
+    place-items: center;
+}
+
+.delete-dialog-card h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.65rem;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+}
+
+.delete-dialog-card p {
+    margin-top: 8px;
+    color: var(--muted);
+}
+
+.delete-dialog-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+    gap: 10px;
+}
+
+.delete-dialog-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 110px;
+    min-height: 42px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 750;
+    cursor: pointer;
+}
+
 .empty-state,
 .empty-message {
     padding: clamp(34px, 6vw, 58px);
@@ -1081,5 +1154,14 @@ textarea {
     .comment-avatar {
         width: 34px;
         height: 34px;
+    }
+
+    .delete-dialog-actions {
+        align-items: stretch;
+        flex-direction: column-reverse;
+    }
+
+    .delete-dialog-actions button {
+        width: 100%;
     }
 }

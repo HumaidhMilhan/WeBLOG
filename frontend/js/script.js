@@ -247,22 +247,72 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    var deleteForms = document.querySelectorAll('.delete-form');
+    var deleteDialog = document.getElementById('delete-dialog');
+    var deleteDialogMessage = document.getElementById('delete-dialog-message');
+    var deleteCancel = document.getElementById('delete-cancel');
+    var deleteConfirm = document.getElementById('delete-confirm');
+    var pendingDeleteForm = null;
+    var deleteTrigger = null;
 
-    for (var index = 0; index < deleteForms.length; index++) {
-        deleteForms[index].addEventListener('submit', function (event) {
-            if (!window.confirm('Are you sure you want to delete this blog?')) {
-                event.preventDefault();
-            }
-        });
+    function openDeleteDialog(form, trigger, message) {
+        pendingDeleteForm = form;
+        deleteTrigger = trigger;
+        deleteDialogMessage.textContent = message;
+        deleteDialog.classList.add('is-open');
+        deleteDialog.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('dialog-open');
+        deleteCancel.focus();
     }
 
-    var commentDeleteForms = document.querySelectorAll('.comment-delete-form');
+    function closeDeleteDialog(restoreFocus) {
+        deleteDialog.classList.remove('is-open');
+        deleteDialog.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('dialog-open');
+        pendingDeleteForm = null;
 
-    for (var commentIndex = 0; commentIndex < commentDeleteForms.length; commentIndex++) {
-        commentDeleteForms[commentIndex].addEventListener('submit', function (event) {
-            if (!window.confirm('Are you sure you want to delete this comment?')) {
+        if (restoreFocus && deleteTrigger) {
+            deleteTrigger.focus();
+        }
+
+        deleteTrigger = null;
+    }
+
+    function connectDeleteForms(forms, message) {
+        for (var formIndex = 0; formIndex < forms.length; formIndex++) {
+            forms[formIndex].addEventListener('submit', function (event) {
                 event.preventDefault();
+                openDeleteDialog(this, event.submitter, message);
+            });
+        }
+    }
+
+    if (deleteDialog && deleteDialogMessage && deleteCancel && deleteConfirm) {
+        connectDeleteForms(document.querySelectorAll('.delete-form'), 'Delete this blog? This action cannot be undone.');
+        connectDeleteForms(document.querySelectorAll('.comment-delete-form'), 'Delete this comment? This action cannot be undone.');
+
+        deleteCancel.addEventListener('click', function () {
+            closeDeleteDialog(true);
+        });
+
+        deleteConfirm.addEventListener('click', function () {
+            if (!pendingDeleteForm) {
+                return;
+            }
+
+            var form = pendingDeleteForm;
+            closeDeleteDialog(false);
+            form.submit();
+        });
+
+        deleteDialog.addEventListener('click', function (event) {
+            if (event.target === deleteDialog) {
+                closeDeleteDialog(true);
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && deleteDialog.classList.contains('is-open')) {
+                closeDeleteDialog(true);
             }
         });
     }

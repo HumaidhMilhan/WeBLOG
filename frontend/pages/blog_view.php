@@ -155,5 +155,17 @@ if (!$blog) {
             </section>
         <?php } ?>
     </main>
+
+    <div class="delete-dialog" id="delete-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-dialog-title" aria-describedby="delete-dialog-message" aria-hidden="true">
+        <div class="delete-dialog-card">
+            <span class="delete-dialog-icon" aria-hidden="true">!</span>
+            <h2 id="delete-dialog-title">Confirm deletion</h2>
+            <p id="delete-dialog-message">This action cannot be undone.</p>
+            <div class="delete-dialog-actions">
+                <button class="secondary-button" id="delete-cancel" type="button">Cancel</button>
+                <button class="danger-button" id="delete-confirm" type="button">Delete</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
